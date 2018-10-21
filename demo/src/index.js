@@ -1,23 +1,25 @@
-import React, {Component} from 'react'
-import {render} from 'react-dom'
+import React from 'react';
+import { render } from 'react-dom';
 
 import ErrorBoundary from '../../src';
 
-function BadComponent() {
-  return <div>
-    there's an error in here {data.name}
-  </div>;
-}
+const BadComponent = () => (
+  <div>
+    There is an error in here
+    {data.name}
+  </div>
+);
 
-class Demo extends Component {
-  render() {
-    return <div>
-      <h2>react-error-boundary Demo</h2>
-      <ErrorBoundary>
-        <BadComponent/>
-      </ErrorBoundary>
-    </div>
-  }
-}
+const Demo = () => (
+  <div>
+    Below we are trying to render a component that has an error in its render method. Luckily we
+    have wrapped the component with ErrorBoundary, and we can see exactly where the error lies.
+    <br />
+    <br />
+    <ErrorBoundary>
+      <BadComponent />
+    </ErrorBoundary>
+  </div>
+);
 
-render(<Demo/>, document.querySelector('#demo'))
+render(<Demo />, document.querySelector('#demo'));
