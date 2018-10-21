@@ -1,23 +1,33 @@
-import expect from 'expect'
-import React from 'react'
-import {render, unmountComponentAtNode} from 'react-dom'
+import expect from 'expect';
+import React from 'react';
+import { unmountComponentAtNode } from 'react-dom';
+import { configure, shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 
-import Component from 'src/'
+import ErrorBoundary from '../src';
 
-describe('Component', () => {
-  let node
+
+describe('ErrorBoundary', () => {
+  let node;
+  configure({ adapter: new Adapter() });
 
   beforeEach(() => {
-    node = document.createElement('div')
-  })
+    node = document.createElement('div');
+  });
 
   afterEach(() => {
-    unmountComponentAtNode(node)
-  })
+    unmountComponentAtNode(node);
+  });
 
-  it('displays a welcome message', () => {
-    render(<Component/>, node, () => {
-      expect(node.innerHTML).toContain('Welcome to React components')
-    })
+  it('renders an error message when state changes', () => {
+    const component = shallow((<ErrorBoundary><div>some bad component here</div></ErrorBoundary>));
+
+    // Here, we set state manually to simulate setting state within the componentDidCatch()
+    // lifecycle method. We don't need to test that React's internals are working, just that we
+    // render a message once state has changed.
+    component.setState({
+      hasError: true,
+    });
+    expect(component.html()).toInclude('Oops');
   })
-})
+});
